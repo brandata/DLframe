@@ -60,7 +60,7 @@ class Linear(Layer):
         :param grad: Gradient tensor
         """
         self.grads["b"] = np.sum(grad, axis=0)
-        self.grads["w"] = self.inputs @ grad
+        self.grads["w"] = self.inputs.T @ grad
         return grad @ self.params["w"].T
 
 
@@ -70,7 +70,7 @@ class Activation(Layer):
     tensor
     """
 
-    def __init__(self, f: function, f_prime: function) -> None:
+    def __init__(self, f, f_prime) -> None:
         """
         Override init. This takes a function and its derivative and applies
         it to all cells in the tensor
@@ -108,4 +108,4 @@ def tanh_prime(x: Tensor) -> Tensor:
 
 class Tanh(Activation):
     def __init__(self):
-        super().__init__(tanh, tanh_prime())
+        super().__init__(tanh, tanh_prime)
